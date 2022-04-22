@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+ 
+	<context:component-scan base-package="com.portailinscription" />
+	 	
+ 	<!-- Process annotations on registered beans like @Autowired... -->
+    <context:annotation-config/>
+
+    <bean id="myBeansValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+ 	
+ 	<mvc:annotation-driven validator="myBeansValidator" />
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/gestionPortailInscriptions"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.portailinscription.model" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Transactions -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="javaMailProperties">
+            <props>
+                    <prop key="mail.smtp.starttls.enable">true</prop>
+                    <prop key="mail.smtp.auth">true</prop>
+                    <prop key="mail.smtps.ssl.checkserveridentity">true</prop>
+                    <prop key="mail.smtps.ssl.trust">*</prop>
+            </props>
+        </property>
+    	<property name="host" value="smtp.gmail.com"/>
+    	<property name="protocol" value="smtp"/>
+    	<property name="port" value="587"/>
+    	<property name="username" value="david.ratz@hotmail.com"/>
+    	<property name="password" value="Defimedia123"/>
+	</bean>
+	
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+	    <property name="from" value="david.ratz@hotmail.com"/>
+	    <property name="subject" value="Inscription"/>
+	</bean>
+	
+	<bean id="simpleMailTest" class="com.portailinscription.util.SimpleMailTest">
+	    <property name="mailSender" ref="mailSender"/>
+	    <property name="templateMessage" ref="templateMessage"/>
+	</bean>
+	
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		 <!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="100000" />
+
+	</bean>
+	
+	<bean id="uploadFile" class="com.portailinscription.util.UploadFile">
+	</bean>
+	
+<!-- 	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy"/> -->
+	
+<!-- 	<bean id="accesDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.AccesDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="travailleurDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.TravailleurDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="documentDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.DocumentDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="entrepriseDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.EntrepriseDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="projetDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.ProjetDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="roleDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.RoleDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="typeDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.TypeDAOImpl" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="userDao" class="org.mockito.Mockito" factory-method="mock"> -->
+<!--         <constructor-arg value="com.portailinscription.dao.impl.UserDAOImpl" /> -->
+<!--     </bean> -->
+</beans>

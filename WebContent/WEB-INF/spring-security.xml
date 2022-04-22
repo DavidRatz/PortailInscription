@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+	<!-- <context:component-scan base-package="com.portailinscription" />
+	<context:annotation-config/> -->
+	<http security="none" pattern="/resources/**"/>
+	<http use-expressions="true">
+		<!-- Si l'utilisateur accède à l'adresse suivante : http://www.example.com/travailleur/ajoutTravailleur.html
+			 mais que celui-ci n'a pas les droits nécessaire, il sera redirigé vers la page de connexion précisé ci-dessous -->
+		<intercept-url pattern="/travailleur/*" access="hasRole('ROLE_SUP_1')" />
+		<intercept-url pattern="/projet/*" access="hasRole('ROLE_SUP_1')" />
+		<intercept-url pattern="/acces/*" access="hasRole('ROLE_SUP_1')" />
+		<access-denied-handler error-page="/403.html"/>
+		<!-- Le formulaire de connexion a utilisé si l'utilisateur n'est pas connecté 
+			 et souhaite accéder à une ressource sécurisée -->
+		<form-login 
+			login-page="/connexion.html"
+			authentication-failure-url="/connexion.html"
+			username-parameter="username"
+			password-parameter="password"
+			/>
+		<!-- Les informations concernant la déconnexion du portail -->	
+		<logout delete-cookies="JSESSIONID" logout-url="/deconnexion.html" logout-success-url="/index.html"  />
+		<!-- active la protection csrf -->
+		<csrf/>
+	</http>	
+	<authentication-manager>
+	    <authentication-provider user-service-ref="userDetailsService">
+	        <password-encoder hash="bcrypt"></password-encoder>
+	    </authentication-provider>
+	</authentication-manager>
+</beans:beans>

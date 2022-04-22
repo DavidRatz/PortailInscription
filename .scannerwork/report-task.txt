@@ -1,0 +1,5 @@
+projectKey=org.sonarqube:PortailInscription
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/org.sonarqube:PortailInscription
+ceTaskId=AVugDxPmme-QKYO0IIWu
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVugDxPmme-QKYO0IIWu

@@ -1,0 +1,12 @@
+.footer {
+	text-align : center;
+	bottom: 0;
+}
+.lien {
+	float: right;
+	text-align: center;
+}
+.control-label {
+	display : block;
+	width : 100%; 
+}
