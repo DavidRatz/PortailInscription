@@ -26,9 +26,9 @@
  	<mvc:annotation-driven validator="myBeansValidator" />
  	
  	<!-- To prevent browser's back button on displaying secured resource after logout -->
- 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+ 	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 	    <property name="cacheSeconds" value="0" />
-	</bean>
+	</bean> -->
  	
  	<!-- This tag allows for mapping the DispatcherServlet to "/" -->
     <mvc:default-servlet-handler/>
@@ -72,7 +72,7 @@
 		<property name="defaultLocale" value="fr" />
 	</bean>
 	
-	<bean id="dataSource" destroy-method="close" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/gestionPortailInscriptions"/>
         <property name="username" value="root"/>
@@ -106,7 +106,7 @@
 	-->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 	  <property name="cache" value="true"/>
-	  <property name="prefix" value=""/>
+	  <property name="prefix" value="/WEB-INF/ftl"/>
 	  <property name="suffix" value=".ftl"/>
 	  <property name="exposeSpringMacroHelpers" value="true"/>	
 	</bean>

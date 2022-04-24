@@ -13,7 +13,7 @@
        <load-on-startup>1</load-on-startup>
    </servlet>
    <servlet-mapping>
-       <servlet-name>portailInscription</servlet-name>
+	<servlet-name>portailInscription</servlet-name>
 <!--        <url-pattern>*.html</url-pattern> -->
 		
 		<url-pattern>/</url-pattern>
